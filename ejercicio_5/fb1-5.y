@@ -22,7 +22,14 @@ exp: factor
 
 factor: term
 	| factor MUL term { $$ = $1 * $3; }
-	| factor DIV term { $$ = $1 / $3; }
+	| factor DIV term {
+		if ($3 == 0) {
+			yyerror("no se puede dividir entre cero");
+			$$ = 0;
+		} else {
+			$$ = $1 / $3;
+		}
+	}
 	;
 
 term: NUMBER
